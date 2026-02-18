@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: '/api', // Use Vite proxy to avoid CORS/network issues
+    baseURL: import.meta.env.VITE_API_URL || '/api', // Use env var in production, proxy in dev
 });
 
 export const getExpenses = async (params) => {
