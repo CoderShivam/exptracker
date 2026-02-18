@@ -29,7 +29,7 @@ app.use('/api/expenses', expenseRoutes);
 // Error Handler
 app.use(errorHandler);
 
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
