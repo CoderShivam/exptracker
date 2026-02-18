@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000', // Directly target backend since proxy might need restart
+    baseURL: '/api', // Use Vite proxy to avoid CORS/network issues
 });
 
 export const getExpenses = async (params) => {
