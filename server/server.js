@@ -24,11 +24,15 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/expenses', expenseRoutes);
+app.use('/api/expenses', expenseRoutes);
 
 // Error Handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
