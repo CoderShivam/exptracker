@@ -11,12 +11,23 @@ dotenv.config();
 const app = express();
 
 // Connect to database
-mongoose.connect(process.env.MONGO_URI)
-    .then((conn) => console.log(`MongoDB Connected: ${conn.connection.host}`))
-    .catch((error) => {
+if (!process.env.MONGO_URI) {
+    console.error('Error: MONGO_URI environment variable is not defined.');
+    process.exit(1);
+}
+
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
         console.error(`Error: ${error.message}`);
         process.exit(1);
-    });
+    }
+};
+
+connectDB();
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
@@ -33,8 +44,18 @@ app.use('/api/expenses', expenseRoutes);
 app.use(errorHandler);
 
 if (require.main === module) {
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`Port ${PORT} is already in use.`);
+            process.exit(1);
+        } else {
+            console.error('Server error:', err);
+            process.exit(1);
+        }
     });
 }
 
