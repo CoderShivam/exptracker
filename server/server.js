@@ -31,11 +31,7 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors()); // Allow all origins for now to enable Vercel/Render deployment
 app.use(express.json());
 
 // Routes
