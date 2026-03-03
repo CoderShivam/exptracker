@@ -61,7 +61,32 @@ const getExpenses = async (req, res, next) => {
     }
 };
 
+// @desc    Delete expense
+// @route   DELETE /api/expenses/:id
+// @access  Public
+const deleteExpense = async (req, res, next) => {
+    try {
+        const expense = await Expense.findById(req.params.id);
+
+        if (!expense) {
+            const error = new Error('Expense not found');
+            error.status = 404;
+            return next(error);
+        }
+
+        await expense.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            data: {}
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     createExpense,
-    getExpenses
+    getExpenses,
+    deleteExpense
 };

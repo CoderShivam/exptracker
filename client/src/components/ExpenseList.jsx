@@ -1,7 +1,7 @@
 import React from 'react';
-import { Utensils, Car, Zap, Film, Box, Wallet } from 'lucide-react';
+import { Utensils, Car, Zap, Film, Box, Wallet, Trash2 } from 'lucide-react';
 
-const ExpenseList = ({ expenses }) => {
+const ExpenseList = ({ expenses, onExpenseDeleted }) => {
     if (expenses.length === 0) {
         return (
             <div className="bg-white p-10 rounded-xl shadow-sm border border-gray-100 text-center">
@@ -40,6 +40,7 @@ const ExpenseList = ({ expenses }) => {
                             <th className="p-5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
                             <th className="p-5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Category</th>
                             <th className="p-5 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Amount</th>
+                            <th className="p-5 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -58,6 +59,15 @@ const ExpenseList = ({ expenses }) => {
                                 <td className="p-5 text-right text-sm font-bold text-gray-900 whitespace-nowrap">
                                     <span className="text-gray-400 font-normal mr-1">₹</span>
                                     {parseFloat(expense.amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                                </td>
+                                <td className="p-5 text-right">
+                                    <button
+                                        onClick={() => onExpenseDeleted(expense._id || expense.id)}
+                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                        title="Delete Expense"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
                                 </td>
                             </tr>
                         ))}

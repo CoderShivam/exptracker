@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getExpenses, createExpense } from './api';
+import { getExpenses, createExpense, deleteExpense } from './api';
 import ExpenseForm from './components/ExpenseForm';
 import ExpenseList from './components/ExpenseList';
 import Filters from './components/Filters';
@@ -38,6 +38,17 @@ function App() {
     const handleExpenseAdded = async (newExpense) => {
         await createExpense(newExpense);
         fetchExpenses(); // Refresh list
+    };
+
+    const handleExpenseDeleted = async (id) => {
+        try {
+            await deleteExpense(id);
+            fetchExpenses(); // Refresh list
+        } catch (err) {
+            console.error('Failed to delete expense', err);
+            // Could add a toast notification here in the future
+            setError('Failed to delete expense');
+        }
     };
 
     return (
@@ -82,7 +93,7 @@ function App() {
                                 </button>
                             </div>
                         ) : (
-                            <ExpenseList expenses={expenses} />
+                            <ExpenseList expenses={expenses} onExpenseDeleted={handleExpenseDeleted} />
                         )}
                     </div>
                 </div>

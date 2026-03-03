@@ -14,4 +14,9 @@ export const createExpense = async (data) => {
     return response.data;
 };
 
+export const deleteExpense = async (id) => {
+    const response = await api.delete(`/expenses/${id}`);
+    return response.data;
+};
+
 export default api;
